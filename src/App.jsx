@@ -1,9 +1,9 @@
 import React from 'react'
-import ImagesExample from './assets/ImagesExample'
+import { Entities } from './assets/Entities'
 const App = () => {
   return (
     <div>
-      <ImagesExample />
+      <Entities />
     </div>
   )
 }
