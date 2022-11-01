@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useRef } from "react"
 import imageExtensions from "image-extensions"
 import isUrl from "is-url"
 import { Transforms, createEditor } from "slate"
@@ -15,6 +15,31 @@ import { css } from "@emotion/css";
 
 import { Button, Icon, Toolbar } from "./components"
 
+//自製上傳圖片按鈕
+const UploadImageButton = () => {
+    const editor = useSlateStatic();
+    const inputFileHandler = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader()
+        const [mime] = file.type.split("/")
+        if (mime === "image") {
+            reader.addEventListener("load", () => {
+                const url = reader.result
+                console.log(reader);
+                insertImage(editor, url)
+            })
+            reader.readAsDataURL(file)
+        }
+    }
+    return (
+        <input type="file" onChange={
+            inputFileHandler
+        }
+        />
+
+    )
+}
+
 const ImagesExample = () => {
     const [value, setValue] = useState(initialValue)
     const editor = useMemo(
@@ -26,6 +51,7 @@ const ImagesExample = () => {
         <Slate editor={editor} value={value} onChange={value => setValue(value)}>
             <Toolbar>
                 <InsertImageButton />
+                <UploadImageButton />
             </Toolbar>
             <Editable
                 renderElement={props => <Element {...props} />}
